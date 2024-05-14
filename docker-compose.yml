@@ -3,9 +3,10 @@ version: '3.8'
 services:
   docker-demo-web-api:
     container_name: docker-demo-web-api-container
-    image: aliyildizoz909/docker-demo
+    build:
+      context: .
+      dockerfile: DockerDemoWebApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
       - MSSQL_SA_PASSWORD=Password1*
     ports:
       - "5000:8080"
@@ -18,4 +19,4 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=Password1*
     ports:
-      - "1433:1433"
+      - "1432:1432"
