@@ -9,17 +9,18 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["DockerDemoWebApi/DockerDemoWebApi.csproj", "DockerDemoWebApi/"]
-RUN dotnet restore "./DockerDemoWebApi/DockerDemoWebApi.csproj"
+COPY ["AspNetCorePublisher/AspNetCorePublisher.csproj", "AspNetCorePublisher/"]
+COPY ["Share/Share.csproj", "Share/"]
+RUN dotnet restore "./AspNetCorePublisher/AspNetCorePublisher.csproj"
 COPY . .
-WORKDIR "/src/DockerDemoWebApi"
-RUN dotnet build "./DockerDemoWebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/AspNetCorePublisher"
+RUN dotnet build "./AspNetCorePublisher.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./DockerDemoWebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./AspNetCorePublisher.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DockerDemoWebApi.dll"]
+ENTRYPOINT ["dotnet", "AspNetCorePublisher.dll"]

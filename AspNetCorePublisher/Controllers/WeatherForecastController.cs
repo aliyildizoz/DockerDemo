@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Share;
+using System;
 
 namespace DockerDemoWebApi.Controllers
 {
@@ -12,22 +14,27 @@ namespace DockerDemoWebApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly RabbitMQPublisher _rabbitMQPublisher;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, RabbitMQPublisher rabbitMQPublisher)
         {
             _logger = logger;
+            _rabbitMQPublisher = rabbitMQPublisher;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost]
+        public IActionResult Post()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var weatherForecast = new WeatherForecast
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                Date = DateTime.Now,
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            };
+
+            _rabbitMQPublisher.Publish(weatherForecast);
+
+            return Ok(weatherForecast);
         }
     }
 }

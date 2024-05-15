@@ -1,22 +1,25 @@
 version: '3.8'
 
 services:
-  docker-demo-web-api:
-    container_name: docker-demo-web-api-container
+  asp-net-core-publisher:
+    container_name: asp-net-core-publisher
     build:
       context: .
-      dockerfile: DockerDemoWebApi/Dockerfile
-    environment:
-      - MSSQL_SA_PASSWORD=Password1*
+      dockerfile: AspNetCorePublisher/Dockerfile
     ports:
       - "5000:8080"
     depends_on:
-      - docker-demo-sqlserver    
-  docker-demo-sqlserver:
-    container_name: docker-demo-sqlserver-container
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Password1*
+      - docker-rabbitmq-server   
+  worker-service-consumer:
+    container_name: worker-service-consumer
+    build:
+      context: .
+      dockerfile: WorkerServiceConsumer/Dockerfile
+    depends_on:
+      - docker-rabbitmq-server
+  docker-rabbitmq-server:
+    container_name: docker-rabbitmq-server
+    image: rabbitmq:3-management
     ports:
-      - "1432:1432"
+      - "15672:15672"
+      - "5672:5672"
