@@ -3,18 +3,14 @@ version: '3.8'
 services:
   asp-net-core-publisher:
     container_name: asp-net-core-publisher
-    build:
-      context: .
-      dockerfile: AspNetCorePublisher/Dockerfile
+    image: aliyildizoz909/docker-demo-rabbitmq-publisher
     ports:
       - "5000:8080"
     depends_on:
       - docker-rabbitmq-server   
   worker-service-consumer:
     container_name: worker-service-consumer
-    build:
-      context: .
-      dockerfile: WorkerServiceConsumer/Dockerfile
+    image: aliyildizoz909/docker-demo-rabbitmq-consumer
     depends_on:
       - docker-rabbitmq-server
   docker-rabbitmq-server:

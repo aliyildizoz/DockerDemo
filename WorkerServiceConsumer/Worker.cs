@@ -23,6 +23,7 @@ namespace WorkerServiceConsumer
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
+            Thread.Sleep(30000);
             _channel = _rabbitMQClientService.Connect();
             _channel.BasicQos(0, 1, false);
             return base.StartAsync(cancellationToken);
