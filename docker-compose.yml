@@ -1,25 +1,15 @@
 version: '3.8'
 
 services:
-  asp-net-core-publisher:
-    container_name: asp-net-core-publisher
-    build:
-      context: .
-      dockerfile: AspNetCorePublisher/Dockerfile
+  asp-net-core-redis:
+    container_name: asp-net-core-redis
+    image: aliyildizoz909/docker-demo-redis
     ports:
       - "5000:8080"
     depends_on:
-      - docker-rabbitmq-server   
-  worker-service-consumer:
-    container_name: worker-service-consumer
-    build:
-      context: .
-      dockerfile: WorkerServiceConsumer/Dockerfile
-    depends_on:
-      - docker-rabbitmq-server
-  docker-rabbitmq-server:
-    container_name: docker-rabbitmq-server
-    image: rabbitmq:3-management
+      - redis-server   
+  redis-server:
+    container_name: redis-server
+    image: redis
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "6379:6379"
