@@ -1,5 +1,4 @@
-using AspNetCoreRedis.Services;
-using StackExchange.Redis;
+using AspNetCoreElasticsearch.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,12 +8,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<RedisService>();
-builder.Services.AddSingleton<IDatabase>(x =>
-{
-    var redisService = x.GetService<RedisService>();
-    return redisService.Database;
-});
+
+builder.Services.AddSingleton<ElasticsearchService>();
 
 var app = builder.Build();
 

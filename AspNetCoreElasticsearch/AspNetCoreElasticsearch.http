@@ -1,0 +1,6 @@
+@AspNetCoreElasticsearch_HostAddress = http://localhost:5038
+
+GET {{AspNetCoreElasticsearch_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

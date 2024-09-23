@@ -1,15 +1,15 @@
 version: '3.8'
 
 services:
-  asp-net-core-redis:
-    container_name: asp-net-core-redis
-    image: aliyildizoz909/docker-demo-redis
+  asp-net-core-elasticsearch:
+    container_name: asp-net-core-elasticsearch
+    image: aliyildizoz909/docker-demo-elasticsearch
     ports:
       - "5000:8080"
     depends_on:
-      - redis-server   
-  redis-server:
-    container_name: redis-server
-    image: redis
+      - elasticsearch-server   
+  elasticsearch-server:
+    container_name: elasticsearch-server
+    image: elasticsearch
     ports:
       - "6379:6379"

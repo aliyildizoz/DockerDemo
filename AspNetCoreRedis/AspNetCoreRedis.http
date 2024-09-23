@@ -1,6 +1,0 @@
-@AspNetCoreRedis_HostAddress = http://localhost:5038
-
-GET {{AspNetCoreRedis_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
