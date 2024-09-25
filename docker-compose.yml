@@ -4,12 +4,27 @@ services:
   asp-net-core-elasticsearch:
     container_name: asp-net-core-elasticsearch
     image: aliyildizoz909/docker-demo-elasticsearch
+    build: 
+      context: .
+      dockerfile: AspNetCoreElasticsearch/Dockerfile
     ports:
       - "5000:8080"
     depends_on:
       - elasticsearch-server   
   elasticsearch-server:
-    container_name: elasticsearch-server
-    image: elasticsearch
-    ports:
-      - "6379:6379"
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    expose:
+      - 9200
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.7.1
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    expose:
+      - 5601
+    depends_on:
+      - elasticsearch-server 
