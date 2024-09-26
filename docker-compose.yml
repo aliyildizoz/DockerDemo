@@ -4,9 +4,6 @@ services:
   asp-net-core-elasticsearch:
     container_name: asp-net-core-elasticsearch
     image: aliyildizoz909/docker-demo-elasticsearch
-    build: 
-      context: .
-      dockerfile: AspNetCoreElasticsearch/Dockerfile
     ports:
       - "5000:8080"
     depends_on:
